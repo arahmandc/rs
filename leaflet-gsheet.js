@@ -1,23 +1,19 @@
 function init() {
 
-	var pointsURL = 'https://docs.google.com/spreadsheets/d/1EDXmzu9H6sd6Hn1Pf8Tvd9jLtr7HaHNWAdxOTsSylhM/edit?usp=sharing';
+ var polyURL =
+    "https://docs.google.com/spreadsheets/d/1D1pdjJqTVbI-CJt0DmedbxTxVI7l9XGykOm3pzlKArA/edit?usp=sharing";
 
-	Tabletop.init( { key: pointsURL,
-    callback: addPoints,
-    simpleSheet: true } ); 
+    //https://docs.google.com/spreadsheets/d/1D1pdjJqTVbI-CJt0DmedbxTxVI7l9XGykOm3pzlKArA/edit?usp=sharing
 
- // var polyURL =
- //    "https://docs.google.com/spreadsheets/d/1wCeXWKTKHbhUh4f75ZHc9kAsz8Zp451xnMNeaGAp4bo/edit?usp=sharing";
+  let sheet_names = ["map"];
 
- //  let sheet_names = ["map"];
-
- //  Tabletop.init({
- //    key: polyURL,
- //    wanted: sheet_names,
- //    callback: function (data) {
- //      addPolygons(data[ sheet_names[0] ].elements);
- //    },
- //  });
+  Tabletop.init({
+    key: polyURL,
+    wanted: sheet_names,
+    callback: function (data) {
+      addPolygons(data[ sheet_names[0] ].elements);
+    },
+  });
 
 
 }
@@ -54,7 +50,7 @@ var panelContent = {
   id: panelID,
   tab: '<i class="fa fa-bars active"></i>',
   // pane: '<p id="sidebar-content"></p><a href="https://arahmandc.github.io/dump/img/1498800820242.jpg" target="_blank"><img src="https://arahmandc.github.io/dump/img/1498800820242.jpg" width="300px"></a> <p>details:</p><p id="sidebar-contentt"></p>',
-  pane: '<p id="sidebar-content"></p><p id="sidebar-image"><p><h4>details:</h4></p><p id="sidebar-contentt"></p>',
+  pane: '<p id="sidebar-image"><p><h4>details:</h4></p><h4 id="sidebar-contentt" style="color:#800026"></h4><h4 id="sidebar-content"></h4><h5 id="address"></h5> <h5 id="price"></h5>',
   title: '<h2 id="sidebar-title">Please Select a Plot.</h2>',
 
 };
@@ -82,189 +78,120 @@ map.zoomControl.setPosition('bottomleft');
 setBounds();
 
 
-// // These are declared outisde the functions so that the functions can check if they already exist
-// var polygonLayer;
-// // The form of data must be a JSON representation of a table as returned by Tabletop.js
-// // addPolygons first checks if the map layer has already been assigned, and if so, deletes it and makes a fresh one
-// // The assumption is that the locally stored JSONs will load before Tabletop.js can pull the external data from Google Sheets
-// function addPolygons(data) {
-//   if (polygonLayer != null) {
-//     // If the layer exists, remove it and continue to make a new one with data
-//     polygonLayer.remove();
-//   }
-
-//   // Need to convert the Tabletop.js JSON into a GeoJSON
-//   // Start with an empty GeoJSON of type FeatureCollection
-//   // All the rows will be inserted into a single GeoJSON
-//   var geojsonStates = {
-//     type: "FeatureCollection",
-//     features: []
-//   };
-//   for (var row in data) {
-//     // The Sheets data has a column 'include' that specifies if that row should be mapped
-//     if (data[row].include == "y") {
-//       var coords = JSON.parse(data[row].geometry);
-//             total_conf += parseInt(data[row].cases);
-//             total_recv += parseInt(data[row].rcov);
-//             total_dead += parseInt(data[row].death);
-//             today_conf += parseInt(data[row].todayconf);
-//             today_rcov += parseInt(data[row].todayrcov);
-//             today_dead += parseInt(data[row].todaydeath);
-//       geojsonStates.features.push({
-//         type: "Feature",
-//         geometry: {
-//           type: "MultiPolygon",
-//           coordinates: coords
-//         },
-//         properties: {
-//           name: data[row].name,
-//           confirmed: data[row].confirmed,
-//           deaths: data[row].deaths,
-//           recover: data[row].recover,
-//           quarantine: data[row].quarantine,
-//           male: data[row].male,
-//           female: data[row].female,
-//           child: data[row].child,
-//           web: data[row].web,
-//           image: data[row].image
-//         }
-//       });
-//     }
-//   }
-
-
-
-
-
-// // The polygons are styled slightly differently on mouse hovers
-//   var polygonStyle = { color: "#f78c72", fillColor: "#f78c72" , weight: 1.5, fillOpacity: 1};
-//   var polygonHoverStyle = { color: "#f5eb5d", fillColor: "#f7ea2f", weight: 1.5, fillOpacity: 1};
-
-
-
-
-
-//   polygonLayer = L.geoJSON(geojsonStates, {
-//     onEachFeature: function(feature, layer) {
-
-//       layer.on({
-//         mouseout: function(e) {
-//           e.target.setStyle({  // Need to manually set each property except `fillColor`
-//             color: polygonStyle.color,
-//             weight: polygonStyle.weight,
-//             fillColor: feature.fill_color,  // Use saved color
-//           });
-//         },
-//         mouseover: function(e) {
-//           e.target.setStyle(polygonHoverStyle);
-//         }
-//       });
-
-//       var html = (map_lang === "bn" ? ("নিশ্চিত: <b>" + bn_num(feature.properties.confirmed)) : ('Confirmed: <b>' + feature.properties.confirmed)) + '</b><br/>';
-//       html += (map_lang === "bn" ? ("সুস্থ: <b>" + bn_num(feature.properties.recover)) : ('Recovered: <b>' + feature.properties.recover)) + '</b><br/>';
-//       html += (map_lang === "bn" ? ("মৃত: <b>" + bn_num(feature.properties.deaths)) : ('Death: <b>' + feature.properties.deaths)) + '</b><br/>';
-//       html += '<h6 class="more-button">' + (!feature.properties.web ? "" : (map_lang === "bn" ? "<a href='dhaka.html' target='_blank'>বিস্তারিত তথ্য</a>" : "<a href='../dhaka.html' target='_blank'>Details</a>")) +'</h6>';
-//       layer.bindPopup(html);
-
-//       let dist_label_html = "<div class='map-dist-label-cont'>" +
-//         "<div class='map-dist-label-name'>" +
-//         feature.properties.name +
-//         "</div>" +
-//         "<div class='map-dist-label-num'>" +
-//         (map_lang === "bn" ? bn_num(feature.properties.confirmed) : feature.properties.confirmed) +
-//         "</div></div>";
-
-//       let label = L.marker(layer.getBounds().getCenter(), {
-//       icon: L.divIcon({
-//         className: 'label',
-//         html: dist_label_html,
-//       })
-//     }).addTo(map);
-//     },
-//     style: polygonStyle
-//   }).addTo(map);
-
-
-
-//   // Set different polygon fill colors based on number of quarantined
-//   polygonLayer.eachLayer(function (layer) {
-//     let d = layer.feature.properties.confirmed;
-//     let fc = d > 50 ? '#800026' :
-//           // d > 200  ? '#E31A1C' :
-//           // d > 50  ? '#BD0026' :
-//           d > 25   ? '#FC4E2A' :
-//           d > 10   ? '#FD8D3C' :
-//           // d > 10   ? '#FEB24C' :
-//           d > 0    ? '#FED976' :
-//           '#FFFFFF';
-//     layer.setStyle({fillColor: fc});
-//     layer.feature.fill_color = fc;  // Save color to use again after mouseout
-//   });
-
-
-
-
-
-
-var pointGroupLayer;
-
-var geojsonStates = {
-    'type': 'FeatureCollection',
-    'features': []
-  };
-
-
-
-function addPoints(data) {
-  if (pointGroupLayer != null) {
-    pointGroupLayer.remove();
+// These are declared outisde the functions so that the functions can check if they already exist
+var polygonLayer;
+// The form of data must be a JSON representation of a table as returned by Tabletop.js
+// addPolygons first checks if the map layer has already been assigned, and if so, deletes it and makes a fresh one
+// The assumption is that the locally stored JSONs will load before Tabletop.js can pull the external data from Google Sheets
+function addPolygons(data) {
+  if (polygonLayer != null) {
+    // If the layer exists, remove it and continue to make a new one with data
+    polygonLayer.remove();
   }
-  pointGroupLayer = L.layerGroup().addTo(map);
 
-  for(var row = 0; row < data.length; row++) {
-    var marker = L.marker([data[row].lat, data[row].long]).addTo(pointGroupLayer);
+  // Need to convert the Tabletop.js JSON into a GeoJSON
+  // Start with an empty GeoJSON of type FeatureCollection
+  // All the rows will be inserted into a single GeoJSON
+  var geojsonStates = {
+    type: "FeatureCollection",
+    features: []
+  };
+  for (var row in data) {
+    // The Sheets data has a column 'include' that specifies if that row should be mapped
+    if (data[row].include == "y") {
+      var coords = JSON.parse(data[row].geometry);
+      geojsonStates.features.push({
+        type: "Feature",
+        geometry: {
+          type: "MultiPolygon",
+          coordinates: coords
+        },
+        properties: {
+          name: data[row].name,
+          plot: data[row].plot,
+          katha: data[row].Katha,
+          status: data[row].status,
+          statuscode: data[row].statuscode,
+          zone: data[row].zone,
+          road: data[row].road,
+          price: data[row].price,
+          image: data[row].image
+        }
+      });
+    }
+  }
 
-     marker.feature = {
-      properties: {
-        location: data[row].location_name,
-        category: data[row].category,
-        level: data[row].level,
-        imagepath: data[row].Image2,
-      }
-    };
-    marker.on({
+
+
+
+
+// The polygons are styled slightly differently on mouse hovers
+  var polygonStyle = { color: "#f78c72", fillColor: "#f78c72" , weight: 1.5, fillOpacity: 1};
+  var polygonHoverStyle = { color: "#f5eb5d", fillColor: "#f7ea2f", weight: 1.5, fillOpacity: 1};
+
+
+
+
+
+  polygonLayer = L.geoJSON(geojsonStates, {
+    onEachFeature: function(feature, layer) {
+
+      layer.on({
+        // mouseout: function(e) {
+        //   e.target.setStyle({  // Need to manually set each property except `fillColor`
+        //     color: polygonStyle.color,
+        //     weight: polygonStyle.weight,
+        //     fillColor: feature.fill_color,  // Use saved color
+        //   });
+        // },
+        // mouseover: function(e) {
+        //   e.target.setStyle(polygonHoverStyle);
+        // }
+
+
+      // marker.on({
       click: function(e) {
         L.DomEvent.stopPropagation(e);
-        document.getElementById('sidebar-title').innerHTML = e.target.feature.properties.location;
-        document.getElementById('sidebar-content').innerHTML = e.target.feature.properties.category;
-        document.getElementById('sidebar-contentt').innerHTML = e.target.feature.properties.level;
-        document.getElementById('sidebar-image').innerHTML = e.target.feature.properties.imagepath;
+        document.getElementById('sidebar-title').innerHTML = e.target.feature.properties.zone + " Zone, Plot: "+ e.target.feature.properties.plot;
+        document.getElementById('sidebar-content').innerHTML = "Measurement:    "+ e.target.feature.properties.katha + " Katha";
+        document.getElementById('sidebar-contentt').innerHTML = e.target.feature.properties.status;
+        document.getElementById('sidebar-image').innerHTML ='<img src="https://'+ e.target.feature.properties.image+'" width="300px">';
+        document.getElementById('address').innerHTML = "Address: Plot "+ e.target.feature.properties.plot + ", "+ e.target.feature.properties.road + ", "+ e.target.feature.properties.zone + " Zone, Super Star City, Dhaka.";
+        document.getElementById('price').innerHTML = "Price:    "+ e.target.feature.properties.price + " BDT.";
         sidebar.open(panelID);
       }
-    });
+      });
 
-    var icon = L.AwesomeMarkers.icon({
-      icon: 'info-sign',
-      iconColor: 'white',
-      markerColor: getColor(data[row].category),
-      prefix: 'glyphicon',
-      extraClasses: 'fa-rotate-0'
-    });
-    marker.setIcon(icon);
-  }
-}
+      let dist_label_html = "<div class='map-dist-label-cont'>" +
+        "<div class='map-dist-label-name'>" +
+        feature.properties.plot +
+        "</div>" //+
+        // "<div class='map-dist-label-num'>" +feature.properties.plot+
+        // // (map_lang === "bn" ? bn_num(feature.properties.confirmed) : feature.properties.confirmed) +
+        // "</div></div>";
+        ;
+
+      let label = L.marker(layer.getBounds().getCenter(), {
+      icon: L.divIcon({
+        className: 'label',
+        html: dist_label_html,
+      })
+    }).addTo(map);
+    },
+    style: polygonStyle
+  }).addTo(map);
 
 
 
+  // Set different polygon fill colors based on number of quarantined
+  polygonLayer.eachLayer(function (layer) {
+    let d = layer.feature.properties.statuscode;
+    let fc = d == 2 ? 'red' :
+          d == 1   ? 'blue' :
+          d == 0    ? 'green' :
+          '#FFFFFF';
+    layer.setStyle({fillColor: fc});
+    layer.feature.fill_color = fc;  // Save color to use again after mouseout
+  });
 
-
-function getColor(type) {
-  switch (type) {
-    case 'Coffee Shop':
-      return 'green';
-    case 'Restaurant':
-      return 'blue';
-    default:
-      return 'green';
-  }
 }
