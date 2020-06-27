@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real Estate Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="css/leaflet-sidebar.css"/>
+    <style>
+        #mydive{ 
+            position:absolute;
+            z-index:1;
+            bottom: 0;
+            right: 0;
+            margin-bottom: 5px;
+            margin-right: 5px;
+        }
+
+        #titlebar{
+          position:absolute;
+            z-index:3;
+            background: #000;
+            width: 100%;
+            height: 85px;
+            text-align: center;
+        }
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+          position:absolute;
+            z-index:0;
+            height: 100%;
+            width: 100%;
+        }
+        #sidebar-content, #sidebar-title {
+            word-break: break-word;
+            margin-right: 40px;
+        }
+    </style>
+</head>
+<body>
+  <div id="titlebar">
+    <h2 style="color:#fff" "">GIS Map Based Dynamic Real Estate Platform</h2>
+  </div>    
+    <div id="map"></div>
+    <div id="mydive"><a href='https://mapbd.github.io' target='_blank'><img height='24px' src='img/mapbd.png'/></a></div>
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet-sidebar.js"></script>
+    <script src="js/tabletop.min.js"></script>
+    <script src="leaflet-gsheet.js"></script>
+</body>
+</html>
