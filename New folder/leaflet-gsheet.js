@@ -1,24 +1,25 @@
 function init() {
 
- // var polyURL =
- //    "https://docs.google.com/spreadsheets/d/1D1pdjJqTVbI-CJt0DmedbxTxVI7l9XGykOm3pzlKArA/edit?usp=sharing";
+ var polyURL =
+    "https://docs.google.com/spreadsheets/d/1D1pdjJqTVbI-CJt0DmedbxTxVI7l9XGykOm3pzlKArA/edit?usp=sharing";
 
- //    //https://docs.google.com/spreadsheets/d/1D1pdjJqTVbI-CJt0DmedbxTxVI7l9XGykOm3pzlKArA/edit?usp=sharing
+    //https://docs.google.com/spreadsheets/d/1D1pdjJqTVbI-CJt0DmedbxTxVI7l9XGykOm3pzlKArA/edit?usp=sharing
 
- //  let sheet_names = ["map"];
+  let sheet_names = ["map"];
 
- //  Tabletop.init({
- //    key: polyURL,
- //    wanted: sheet_names,
- //    callback: function (data) {
- //      addPolygons(data[ sheet_names[0] ].elements);
- //    },
- //  });
-
- var polyURL ="https://docs.google.com/spreadsheets/d/e/2PACX-1vQ4tE0qWIHUkmdKp0VXIY6q5QjEk28Is3tPEUQaNjcFMwwS8oKjmg_-RUU3nYW26BjnYfhmEWSopu5C/pub?gid=0&single=true&output=csv";
+  Tabletop.init({
+    key: polyURL,
+    wanted: sheet_names,
+    callback: function (data) {
+      addPolygons(data[ sheet_names[0] ].elements);
+    },
+  });
 
 
 }
+
+
+
 
 
 window.addEventListener('DOMContentLoaded', init);
@@ -42,13 +43,6 @@ var sidebar = L.control.sidebar({
   position: 'right'
 }).addTo(map);
 
-
-
-Papa.parse(polyURL, {
-    download: true,
-    header: true,
-    complete: addPolygons,
-  });
 
 
 panelID = 'my-info-panel'
